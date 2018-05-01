@@ -32,8 +32,8 @@ void vrep_utils::setup_vrep_remote() {
         } else {
             std::cout << "Connected to V-REP" << std::endl;
         }
-    } catch (std::exception e) {
-        std::cout << e.what() << std::endl;
+    } catch (const char *msg) {
+        std::cout << msg << std::endl;
     }
 }
 
