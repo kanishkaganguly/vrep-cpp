@@ -1,3 +1,0 @@
-/home/kanishka/Documents/Projects/task_planner/build/CMakeFiles/edit_cache.dir
-/home/kanishka/Documents/Projects/task_planner/build/CMakeFiles/rebuild_cache.dir
-/home/kanishka/Documents/Projects/task_planner/build/CMakeFiles/task_planner.dir
