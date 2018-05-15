@@ -15,7 +15,7 @@ std::string vrep_utils::_default_handle = "";
 
 void vrep_utils::launch_vrep() {
     std::string vrep_path(
-            "nohup /home/kanishka/Documents/Projects/VREP/V-REP_PRO_EDU_V3_5_0_Linux/vrep.sh &");
+            "nohup /home/kanishka/Documents/Projects/VREP/VREP/vrep.sh &");
     int ret = std::system(vrep_path.c_str());
     usleep(5e+6);
     std::cout << "V-REP launched" << std::endl;

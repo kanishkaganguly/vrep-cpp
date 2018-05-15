@@ -17,10 +17,15 @@ set(LINK_LIBRARIES ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES})
 
 include_directories(include)
 include_directories(external/include)
+include_directories(examples/include)
 include_directories(${OTHER_INCLUDES})
 
 file(GLOB_RECURSE ext_src ${CMAKE_SOURCE_DIR}/external/*.c ${CMAKE_SOURCE_DIR}/external/*.cpp)
+file(GLOB_RECURSE examples_src ${CMAKE_SOURCE_DIR}/examples/*.c ${CMAKE_SOURCE_DIR}/examples/*.cpp)
 
-#add_executable(example_pointcloud ${ext_src} src/example_pointcloud.cpp src/vrep_utils.cpp src/vrep_kinect.cpp)
+# Examples
+add_executable(example_pointcloud ${examples_src} examples/example_pointcloud.cpp src/vrep_utils.cpp src/vrep_kinect.cpp)
+
+# Testing
 add_executable(${PROJECT_NAME} ${ext_src} src/blah.cpp src/vrep_utils.cpp src/vrep_kinect.cpp)
 target_link_libraries(${PROJECT_NAME} ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES})

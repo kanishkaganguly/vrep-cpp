@@ -40,6 +40,8 @@ int main(int argc, char *argv[]) {
                     std::cout << vrep_vals[i] << " ";
                 }
                 std::cout << std::endl;
+
+                vrep_utils::step_sim();
             }
         }
     } catch (char *msg) {
