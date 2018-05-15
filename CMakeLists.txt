@@ -3,7 +3,6 @@ project(vrep_cpp)
 
 # Build setup
 set(CMAKE_BUILD_TYPE "Release")
-add_definitions("-O2")
 add_definitions("-DNON_MATLAB_PARSING -DMAX_EXT_API_CONNECTIONS=255 -DDO_NOT_USE_SHARED_MEMORY")
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
 

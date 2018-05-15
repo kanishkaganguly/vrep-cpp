@@ -22,6 +22,7 @@ namespace vrep_utils {
     extern float _sim_timestep;
     extern std::string _default_scene_name;
     extern std::string _default_handle;
+    extern bool _isStreamingInitialized;
 
     void launch_vrep();
 
@@ -40,4 +41,5 @@ namespace vrep_utils {
     void load_scene(std::string scene_name = _default_scene_name);
 
     int fetch_handle(std::string obj_name = _default_handle);
+
 }

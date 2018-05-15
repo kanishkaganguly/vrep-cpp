@@ -23,5 +23,6 @@ namespace vrep_path {
 
     std::vector<float> fetch_path_data_from_relative_position(int &clientID);
 
-    void move_object_on_path(int &clientID, int &object_handle, std::vector<float> &object_pose);
+    void move_object_on_path(int &clientID, int &object_handle, std::vector<float> &object_pose,
+                             bool isStreamingInitialized);
 }

@@ -25,7 +25,19 @@ std::vector<float> vrep_path::fetch_path_data_from_relative_position(int &client
     return vrep_vals;
 }
 
-void vrep_path::move_object_on_path(int &clientID, int &object_handle, std::vector<float> &object_pose) {
-    simxSetObjectPosition(clientID, object_handle, -1, object_pose.data(), simx_opmode_oneshot);
-    simxSetObjectOrientation(clientID, object_handle, -1, object_pose.data() + 3, simx_opmode_oneshot);
+void vrep_path::move_object_on_path(int &clientID, int &object_handle, std::vector<float> &object_pose,
+                                    bool isStreamingInitialized) {
+
+    float curr_orientation[3] = {0};
+    int res = simxGetObjectOrientation(clientID, object_handle, -1, curr_orientation,
+                                       isStreamingInitialized == false ? simx_opmode_streaming : simx_opmode_buffer);
+
+    if (res == simx_return_ok && res != simx_error_novalue_flag && isStreamingInitialized != false) {
+        std::vector<float> curr_orientation_floats(curr_orientation, curr_orientation + 3);
+        object_pose[4] = curr_orientation_floats[1];
+        object_pose[5] = curr_orientation_floats[2];
+        simxSetObjectPosition(clientID, object_handle, -1, object_pose.data(), simx_opmode_oneshot);
+        simxSetObjectOrientation(clientID, object_handle, -1, object_pose.data() + 3, simx_opmode_oneshot);
+    }
+
 }
