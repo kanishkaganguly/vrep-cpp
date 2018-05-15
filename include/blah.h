@@ -1,8 +1,12 @@
 //
-// Created by kganguly on 4/2/18.
+// Created by kganguly on 5/1/18.
 //
 
 #pragma once
 
 #include "vrep_utils.h"
-#include "vrep_kinect.h"
+
+extern "C" {
+#include "extApi.h"
+#include "extApiPlatform.h"
+}

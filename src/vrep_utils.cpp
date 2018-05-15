@@ -24,8 +24,8 @@ void vrep_utils::launch_vrep() {
 void vrep_utils::setup_vrep_remote() {
     std::cout << "Starting Remote API" << std::endl;
     try {
-        _clientID = simxStart(_remoteIP.c_str(), _port, true, false, 5000, 5);
-        if (_clientID == -1) {
+        vrep_utils::_clientID = simxStart(vrep_utils::_remoteIP.c_str(), vrep_utils::_port, true, false, 5000, 5);
+        if (vrep_utils::_clientID == -1) {
             std::cout << "Failed to connect to Remote API server" << std::endl;
             vrep_utils::exit_vrep();
             exit(0);
@@ -40,32 +40,32 @@ void vrep_utils::setup_vrep_remote() {
 
 void vrep_utils::exit_vrep() {
     vrep_utils::stop_sim();
-    simxFinish(_clientID);
+    simxFinish(vrep_utils::_clientID);
 }
 
 void vrep_utils::start_sim() {
-    simxSynchronous(_clientID, true);
-    simxSetFloatingParameter(_clientID, sim_floatparam_simulation_time_step, _sim_timestep,
+    simxSynchronous(vrep_utils::_clientID, true);
+    simxSetFloatingParameter(vrep_utils::_clientID, sim_floatparam_simulation_time_step, _sim_timestep,
                              simx_opmode_oneshot);
-    simxStartSimulation(_clientID, simx_opmode_blocking);
+    simxStartSimulation(vrep_utils::_clientID, simx_opmode_blocking);
 }
 
 
 void vrep_utils::stop_sim() {
-    simxStopSimulation(_clientID, simx_opmode_oneshot_wait);
+    simxStopSimulation(vrep_utils::_clientID, simx_opmode_oneshot_wait);
 }
 
 void vrep_utils::pause_sim() {
-    simxPauseSimulation(_clientID, simx_opmode_oneshot_wait);
+    simxPauseSimulation(vrep_utils::_clientID, simx_opmode_oneshot_wait);
 }
 
 void vrep_utils::step_sim() {
-    simxSynchronousTrigger(_clientID);
+    simxSynchronousTrigger(vrep_utils::_clientID);
 }
 
 void vrep_utils::load_scene(std::string scene_name) {
     std::cout << "Loading scene: " << scene_name.c_str() << std::endl;
-    simxLoadScene(_clientID, (scene_name).c_str(), 0xFF, simx_opmode_blocking);
+    simxLoadScene(vrep_utils::_clientID, (scene_name).c_str(), 0xFF, simx_opmode_blocking);
 }
 
 int vrep_utils::fetch_handle(std::string obj_name) {
@@ -74,7 +74,7 @@ int vrep_utils::fetch_handle(std::string obj_name) {
         return -1;
     }
     int handle;
-    simxGetObjectHandle(_clientID, obj_name.c_str(), &handle, simx_opmode_blocking);
-
+    simxGetObjectHandle(vrep_utils::_clientID, obj_name.c_str(), &handle, simx_opmode_blocking);
+    std::cout << "Fetched object handle for " << obj_name << ": " << handle << std::endl;
     return handle;
 }

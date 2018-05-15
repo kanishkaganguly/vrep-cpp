@@ -21,5 +21,6 @@ include_directories(${OTHER_INCLUDES})
 
 file(GLOB_RECURSE ext_src ${CMAKE_SOURCE_DIR}/external/*.c ${CMAKE_SOURCE_DIR}/external/*.cpp)
 
-add_executable(task_planner ${ext_src} src/blah.cpp src/vrep_utils.cpp src/vrep_kinect.cpp)
+#add_executable(example_pointcloud ${ext_src} src/example_pointcloud.cpp src/vrep_utils.cpp src/vrep_kinect.cpp)
+add_executable(${PROJECT_NAME} ${ext_src} src/blah.cpp src/vrep_utils.cpp src/vrep_kinect.cpp)
 target_link_libraries(${PROJECT_NAME} ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES})
