@@ -4,4 +4,5 @@
 
 #pragma once
 
+#include <vrep_utils.h>
 #include <vrep_path.h>

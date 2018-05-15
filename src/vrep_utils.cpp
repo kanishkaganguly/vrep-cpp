@@ -48,7 +48,6 @@ void vrep_utils::start_sim() {
                              simx_opmode_oneshot);
     simxSynchronous(vrep_utils::_clientID, true);
     simxStartSimulation(vrep_utils::_clientID, simx_opmode_blocking);
-    vrep_utils::step_sim();
 }
 
 

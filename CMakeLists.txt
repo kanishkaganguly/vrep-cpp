@@ -29,3 +29,6 @@ file(GLOB_RECURSE examples_src ${CMAKE_SOURCE_DIR}/examples/*.c ${CMAKE_SOURCE_D
 
 add_executable(example_path ${ext_src} examples/example_path.cpp)
 target_link_libraries(example_path ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES} ${PROJECT_NAME})
+
+add_executable(example_pointcloud ${ext_src} examples/example_pointcloud.cpp)
+target_link_libraries(example_pointcloud ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES} ${PROJECT_NAME})

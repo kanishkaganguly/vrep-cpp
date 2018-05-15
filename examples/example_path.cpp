@@ -17,18 +17,23 @@ int main(int argc, char *argv[]) {
 
             vrep_path::_path_name = "Path";
             vrep_path::_path_handle = vrep_utils::fetch_handle(vrep_path::_path_name);
+            int kinect_handle = vrep_utils::fetch_handle("kinect");
             vrep_path::_path_function = "fetchPath_function";
-            vrep_path::_percent_of_path = 0.1;
-            int i = 0;
-            while (simxGetConnectionId(vrep_utils::_clientID) != -1) {
+            vrep_path::_percent_of_path = 0.0;
+            vrep_path::_path_increment = 1e-3;
 
-                vrep_path::_percent_of_path = 0.1 + i;
-                std::vector<float> vrep_vals = vrep_path::fetch_path_data_from_relative_position();
+            while (simxGetConnectionId(vrep_utils::_clientID) != -1) {
+                std::vector<float> pose_on_path = vrep_path::fetch_path_data_from_relative_position(
+                        vrep_utils::_clientID);
+                std::cout << vrep_path::_percent_of_path << " := ";
                 for (int i = 0; i < vrep_path::_count_floats_from_server; ++i) {
-                    std::cout << vrep_vals[i] << " ";
+                    std::cout << pose_on_path[i] << " ";
                 }
                 std::cout << std::endl;
-                i += 0.1;
+
+                vrep_path::move_object_on_path(vrep_utils::_clientID, kinect_handle, pose_on_path);
+
+                vrep_path::_percent_of_path += vrep_path::_path_increment;
                 vrep_utils::step_sim();
             }
         }

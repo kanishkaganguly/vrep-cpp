@@ -6,7 +6,6 @@
 
 #include<string>
 #include <iostream>
-#include "vrep_utils.h"
 
 extern "C" {
 #include "extApi.h"
@@ -20,6 +19,9 @@ namespace vrep_path {
     int _path_handle;
     int _count_floats_from_server;
     float *_floats_from_server;
+    float _path_increment;
 
-    std::vector<float> fetch_path_data_from_relative_position();
+    std::vector<float> fetch_path_data_from_relative_position(int &clientID);
+
+    void move_object_on_path(int &clientID, int &object_handle, std::vector<float> &object_pose);
 }
