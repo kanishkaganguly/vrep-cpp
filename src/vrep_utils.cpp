@@ -30,7 +30,7 @@ void vrep_utils::setup_vrep_remote() {
             vrep_utils::exit_vrep();
             exit(0);
         } else {
-            std::cout << "Connected to V-REP" << std::endl;
+            std::cout << "Connected to V-REP with ClientID: " << vrep_utils::_clientID << std::endl;
         }
     } catch (const char *msg) {
         std::cout << msg << std::endl;
@@ -44,10 +44,11 @@ void vrep_utils::exit_vrep() {
 }
 
 void vrep_utils::start_sim() {
-    simxSynchronous(vrep_utils::_clientID, true);
     simxSetFloatingParameter(vrep_utils::_clientID, sim_floatparam_simulation_time_step, _sim_timestep,
                              simx_opmode_oneshot);
+    simxSynchronous(vrep_utils::_clientID, true);
     simxStartSimulation(vrep_utils::_clientID, simx_opmode_blocking);
+    vrep_utils::step_sim();
 }
 
 

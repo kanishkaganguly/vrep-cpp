@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(task_planner)
+project(vrep_cpp)
 
 # Build setup
 set(CMAKE_BUILD_TYPE "Release")
@@ -13,19 +13,19 @@ find_package(cilantro REQUIRED)
 find_package(OpenCV REQUIRED)
 
 set(OTHER_INCLUDES ${EIGEN3_INCLUDE_DIRS} ${Pangolin_INCLUDE_DIRS} ${cilantro_INCLUDE_DIRS})
-set(LINK_LIBRARIES ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES})
 
-include_directories(include)
-include_directories(external/include)
-include_directories(examples/include)
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/external/include)
 include_directories(${OTHER_INCLUDES})
-
 file(GLOB_RECURSE ext_src ${CMAKE_SOURCE_DIR}/external/*.c ${CMAKE_SOURCE_DIR}/external/*.cpp)
-file(GLOB_RECURSE examples_src ${CMAKE_SOURCE_DIR}/examples/*.c ${CMAKE_SOURCE_DIR}/examples/*.cpp)
+
+# Make library
+add_library(${PROJECT_NAME} SHARED src/vrep_utils.cpp src/vrep_path.cpp src/vrep_kinect.cpp)
+target_link_libraries(${PROJECT_NAME} ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES})
 
 # Examples
-add_executable(example_pointcloud ${examples_src} examples/example_pointcloud.cpp src/vrep_utils.cpp src/vrep_kinect.cpp)
+include_directories(${CMAKE_SOURCE_DIR}/examples/include)
+file(GLOB_RECURSE examples_src ${CMAKE_SOURCE_DIR}/examples/*.c ${CMAKE_SOURCE_DIR}/examples/*.cpp)
 
-# Testing
-add_executable(${PROJECT_NAME} ${ext_src} src/blah.cpp src/vrep_utils.cpp src/vrep_kinect.cpp)
-target_link_libraries(${PROJECT_NAME} ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES})
+add_executable(example_path ${ext_src} examples/example_path.cpp)
+target_link_libraries(example_path ${Pangolin_LIBRARIES} ${cilantro_LIBRARIES} ${PROJECT_NAME})

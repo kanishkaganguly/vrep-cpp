@@ -8,6 +8,7 @@
 #include<string>
 #include <iostream>
 #include <unistd.h>
+#include <vector>
 
 extern "C" {
 #include "extApi.h"
