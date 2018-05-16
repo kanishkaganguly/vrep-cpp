@@ -11,7 +11,6 @@ int vrep_utils::_port = 19999;
 float vrep_utils::_sim_timestep = .005;
 std::string vrep_utils::_default_scene_name = "../scenes/sample.ttt";
 std::string vrep_utils::_default_handle = "";
-bool vrep_utils::_isStreamingInitialized = false;
 
 void vrep_utils::launch_vrep() {
     std::string vrep_path(
@@ -75,7 +74,8 @@ int vrep_utils::fetch_handle(std::string obj_name) {
     }
     int handle;
     simxGetObjectHandle(vrep_utils::_clientID, obj_name.c_str(), &handle, simx_opmode_blocking);
+    vrep_utils::_isStreamingInitialized[handle] = false;
     std::cout << "Fetched object handle for " << obj_name << ": " << handle << std::endl;
+
     return handle;
 }
-

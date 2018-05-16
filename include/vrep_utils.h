@@ -9,6 +9,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <vector>
+#include <map>
 
 extern "C" {
 #include "extApi.h"
@@ -22,7 +23,7 @@ namespace vrep_utils {
     extern float _sim_timestep;
     extern std::string _default_scene_name;
     extern std::string _default_handle;
-    extern bool _isStreamingInitialized;
+    std::map<int, bool> _isStreamingInitialized;
 
     void launch_vrep();
 
