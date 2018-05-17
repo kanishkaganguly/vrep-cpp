@@ -2,10 +2,17 @@
 // Created by kganguly on 5/15/18.
 //
 
+#include <csignal>
 #include "example_path.h"
 
-int main(int argc, char *argv[]) {
+void clion_kill(int signum) {
+    printf("SIGTERM. Ending now...\n", signum);
+    vrep_utils::stop_sim();
+    exit(0);
+}
 
+int main(int argc, char *argv[]) {
+    signal(SIGTERM, clion_kill);
 
 //    vrep_utils::launch_vrep();
     vrep_utils::setup_vrep_remote();
@@ -38,8 +45,6 @@ int main(int argc, char *argv[]) {
                 } else if (vrep_path::_percent_of_path < 0.0 && reverse == true) {
                     reverse = false;
                 }
-
-
                 reverse ? vrep_path::_percent_of_path -= vrep_path::_path_increment
                         : vrep_path::_percent_of_path += vrep_path::_path_increment;
 
@@ -51,5 +56,5 @@ int main(int argc, char *argv[]) {
         std::cout << msg << std::endl;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

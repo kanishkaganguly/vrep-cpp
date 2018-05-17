@@ -48,48 +48,50 @@ vrep_path::move_object_on_path_lookat(int &clientID, int &object1_handle, int &o
 
     Eigen::Vector3f lookAt_camera_world = vrep_path::compute_lookat_vector(current_camera_pose, current_worlditem_pose);
 
+//    simxSetObjectPosition(clientID, object1_handle, -1, object1_pose.data(), simx_opmode_oneshot);
+    int res = simxSetObjectOrientation(clientID, object1_handle, -1, lookAt_camera_world.data(), simx_opmode_oneshot);
 
-    simxSetObjectPosition(clientID, object1_handle, -1, object1_pose.data(), simx_opmode_oneshot);
-    simxSetObjectOrientation(clientID, object1_handle, -1, lookAt_camera_world.data(), simx_opmode_oneshot);
 }
 
-Eigen::Matrix4f vrep_path::create_transformation_matrix_from_values(std::vector<float> position_euler_data) {
-    float x = position_euler_data[0];
-    float y = position_euler_data[1];
-    float z = position_euler_data[2];
-    float a = position_euler_data[3];
-    float b = position_euler_data[4];
-    float g = position_euler_data[5];
+Eigen::Vector3f
+vrep_path::compute_lookat_vector(std::vector<float> pose_data_from, std::vector<float> pose_data_to) {
+
+    Eigen::Vector3f from_trans(pose_data_from[0], pose_data_from[1], pose_data_from[2]);
+    Eigen::Vector3f to_trans(pose_data_to[0], pose_data_to[1], pose_data_to[2]);
+    Eigen::Vector3f from_rot_euler(pose_data_from[3], pose_data_from[4], pose_data_from[5]);
+    Eigen::Vector3f to_rot_euler(pose_data_to[3], pose_data_to[4], pose_data_to[5]);
+
+    Eigen::Matrix3f from_rot = vrep_path::rotation_matrix_from_euler(from_rot_euler);
+    Eigen::Matrix3f to_rot = vrep_path::rotation_matrix_from_euler(to_rot_euler);
+
+    Eigen::Vector3f forward = (from_trans - to_trans).normalized();
+    Eigen::Vector3f tmp = Eigen::Vector3f::UnitZ();
+    Eigen::Vector3f right = (tmp.normalized()).cross(forward);
+    Eigen::Vector3f up = forward.cross(right);
+
+//    Eigen::Vector3f y_vec = (from_trans - to_trans).normalized();
+//    Eigen::Vector3f z_vec = Eigen::Vector3f::UnitZ();
+//    z_vec = (z_vec - z_vec.dot(y_vec) * y_vec).normalized();
+//    Eigen::Vector3f x_vec = z_vec.cross(y_vec);
+
+    // lookAt Vector
+    Eigen::Matrix3f lookAt;
+    lookAt.row(0) = right;
+    lookAt.row(1) = up;
+    lookAt.row(2) = forward;
+
+    return lookAt.eulerAngles(0, 1, 2);
+}
+
+Eigen::Matrix3f vrep_path::rotation_matrix_from_euler(Eigen::Vector3f euler) {
+    float a = euler(0);
+    float b = euler(1);
+    float g = euler(2);
 
     Eigen::Matrix3f rot;
     rot = Eigen::AngleAxisf(a, Eigen::Vector3f::UnitX()) *
           Eigen::AngleAxisf(b, Eigen::Vector3f::UnitY()) *
           Eigen::AngleAxisf(g, Eigen::Vector3f::UnitZ());
 
-
-    Eigen::Matrix4f transformation_matrix;
-    transformation_matrix.setIdentity();
-    transformation_matrix.topLeftCorner(3, 3) = rot;
-    transformation_matrix.bottomLeftCorner(1, 3) = Eigen::Vector3f(x, y, z);
-
-    return transformation_matrix;
-}
-
-Eigen::Vector3f
-vrep_path::compute_lookat_vector(std::vector<float> pose_data_from, std::vector<float> pose_data_to) {
-    Eigen::Matrix4f from_tf = vrep_path::create_transformation_matrix_from_values(pose_data_from);
-    Eigen::Matrix4f to_tf = vrep_path::create_transformation_matrix_from_values(pose_data_to);
-
-    Eigen::Vector3f y_vec = (to_tf.bottomLeftCorner(1, 3) - from_tf.bottomLeftCorner(1, 3)).normalized();
-    Eigen::Vector3f z_vec = Eigen::Vector3f::UnitZ();
-    z_vec = (z_vec - z_vec.dot(y_vec) * y_vec).normalized();
-    Eigen::Vector3f x_vec = z_vec.cross(y_vec);
-
-    // lookAt Vector
-    Eigen::Matrix3f lookAt;
-    lookAt.row(0) = x_vec;
-    lookAt.row(1) = y_vec;
-    lookAt.row(2) = z_vec;
-
-    return lookAt.eulerAngles(0, 1, 2);
+    return rot;
 }

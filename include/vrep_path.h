@@ -32,7 +32,7 @@ namespace vrep_path {
                                std::vector<float> &object1_pose,
                                std::map<int, bool> &isStreamingInitialized);
 
-    Eigen::Matrix4f create_transformation_matrix_from_values(std::vector<float> position_euler_data);
+    Eigen::Matrix3f rotation_matrix_from_euler(Eigen::Vector3f euler);
 
     Eigen::Vector3f compute_lookat_vector(std::vector<float> pose_data_from, std::vector<float> pose_data_to);
 

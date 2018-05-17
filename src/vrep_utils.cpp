@@ -64,6 +64,7 @@ void vrep_utils::step_sim() {
 
 void vrep_utils::load_scene(std::string scene_name) {
     std::cout << "Loading scene: " << scene_name.c_str() << std::endl;
+    simxCloseScene(vrep_utils::_clientID, simx_opmode_blocking);
     simxLoadScene(vrep_utils::_clientID, (scene_name).c_str(), 0xFF, simx_opmode_blocking);
 }
 
