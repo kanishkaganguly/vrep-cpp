@@ -7,7 +7,7 @@
 #include "cilantro/image_viewer.hpp"
 #include "cilantro/visualizer.hpp"
 #include "cilantro/point_cloud.hpp"
-#include "cilantro/image_point_cloud_conversions.hpp"
+#include "cilantro/common_renderables.hpp"
 
 extern "C" {
 #include "extApi.h"
