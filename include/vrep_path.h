@@ -28,13 +28,11 @@ namespace vrep_path {
     std::vector<float> fetch_path_data_from_relative_position(int &clientID);
 
     void
-    move_object_on_path_lookat(int &clientID, int &object1_handle, int &object2_handle,
-                               std::vector<float> &object1_pose,
-                               std::map<int, bool> &isStreamingInitialized);
+    move_object_on_path(int &clientID, int &object1_handle,
+                        std::vector<float> &object1_pose,
+                        std::map<int, bool> &isStreamingInitialized);
 
     Eigen::Matrix3f rotation_matrix_from_euler(Eigen::Vector3f euler);
-
-    Eigen::Vector3f compute_lookat_vector(std::vector<float> pose_data_from, std::vector<float> pose_data_to);
 
     std::vector<float>
     fetch_object_pose_xyzeuler(int &clientID, int &object_handle, std::map<int, bool> &isStreamingInitialized);

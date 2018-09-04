@@ -30,14 +30,18 @@ int main(int argc, char *argv[]) {
             bool reverse = false;
 
             int kinect_handle = vrep_utils::fetch_handle("kinect");
-            int bowl_handle = vrep_utils::fetch_handle("Bowl0");
+            int sphere_handle = vrep_utils::fetch_handle("Sphere");
 
             while (simxGetConnectionId(vrep_utils::_clientID) != -1) {
                 std::vector<float> target_pose_on_path = vrep_path::fetch_path_data_from_relative_position(
                         vrep_utils::_clientID);
+                for (auto const &c : target_pose_on_path) {
+                    std::cout << c << ' ';
+                }
+                std::cout << std::endl;
 
-                vrep_path::move_object_on_path_lookat(vrep_utils::_clientID, kinect_handle, bowl_handle,
-                                                      target_pose_on_path,
+                vrep_path::move_object_on_path(vrep_utils::_clientID, sphere_handle,
+                                               target_pose_on_path,
                                                vrep_utils::_isStreamingInitialized);
 
                 if (vrep_path::_percent_of_path > 1.0 && reverse == false) {

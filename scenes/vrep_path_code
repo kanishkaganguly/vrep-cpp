@@ -1,0 +1,7 @@
+fetchPath_function=function(intParams,floatParams,stringParams,bufferParams)
+    i = floatParams[1]
+    path=intParams[1]
+    pos=sim.getPositionOnPath(path,i)
+    eul=sim.getOrientationOnPath(path,i)
+    return {},{pos[1],pos[2],pos[3],eul[1],eul[2],eul[3]},{},''
+end
